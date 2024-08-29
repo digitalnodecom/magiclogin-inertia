@@ -1,16 +1,18 @@
 {
-    "name": "dushanc/magicmk-auth-laravel-inertia",
+    "name": "digitalnode/magicmk-auth-laravel-inertia",
     "description": "Integration od magicmk in a laravel + intertiaJS project",
     "keywords": [
         "DigitalNode",
         "laravel",
+        "magicmk",
+        "magic login",
         "magicmk-auth-laravel-inertia"
     ],
-    "homepage": "https://github.com/dushanc/magicmk-auth-laravel-inertia",
+    "homepage": "https://gitlab.com/magicmk/magicmk-auth-laravel-inertia",
     "license": "MIT",
     "authors": [
         {
-            "name": "DigitalNode",
+            "name": "Dushan Cimbaljevic",
             "email": "dushan@digitalnode.com",
             "role": "Developer"
         }

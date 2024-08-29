@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace DigitalNode\MagicmkAuthLaravelInertia\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class MagicmkAuthLaravelInertiaCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'magicmk-auth-laravel-inertia';
 
     public $description = 'My command';
 

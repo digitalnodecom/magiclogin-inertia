@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace DigitalNode\MagicmkAuthLaravelInertia;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use DigitalNode\MagicmkAuthLaravelInertia\Commands\MagicmkAuthLaravelInertiaCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class MagicmkAuthLaravelInertiaServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('magicmk-auth-laravel-inertia')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_migration_table_name_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_magicmk_auth_laravel_inertia_table')
+            ->hasCommand(MagicmkAuthLaravelInertiaCommand::class);
     }
 }

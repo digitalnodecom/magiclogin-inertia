@@ -1,10 +1,10 @@
 <?php
 
-namespace DigitalNode\MagicmkAuthLaravelInertia\Tests;
+namespace VendorName\Skeleton\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use DigitalNode\MagicmkAuthLaravelInertia\MagicmkAuthLaravelInertiaServiceProvider;
+use VendorName\Skeleton\MagicmkAuthLaravelInertiaServiceProvider;
 
 class TestCase extends Orchestra
 {

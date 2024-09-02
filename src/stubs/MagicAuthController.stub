@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class MagicAuthController extends Controller
+{
+
+    /**
+     * @param string $email
+     * @return void
+     */
+    public function register_or_login_user(string $email): void
+    {
+        $user = User::query()->createOrFirst(["email" => $email]);
+
+        Auth::login($user, true);
+
+    }
+
+    /**
+     *  Handling the redirect form magic.mk and logging in or registering the user,
+     *  or if it's not a redirect from magic, just render the login page
+     *
+     * @return Application|Response|Redirector|RedirectResponse
+     * @throws ConnectionException
+     */
+    public function index(): Application|Response|Redirector|RedirectResponse
+    {
+        $xapikey = env('MAGIC_LOGIN_API_KEY');
+
+        //If its redirect form magic login
+        if (request()->query("token")) {
+
+            $response = Http::withHeaders([
+                'X-API-Key' => $xapikey,
+            ])->post('https://magic.mk/api/request_validated/', [
+                'request_id' => request()->query("request_id"),
+            ]);
+
+            if ($response->successful()) {
+                $email = $response->json()["email"];
+                $this->register_or_login_user($email);
+                return redirect('/');
+            }
+        }
+
+        return Inertia::render('Auth/MagicAuth', ["magic_project_key" => env('MAGIC_LOGIN_PROJECT_KEY')]);
+    }
+
+    /**
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
+}

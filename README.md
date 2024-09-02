@@ -34,3 +34,22 @@ MAGIC_LOGIN_PROJECT_KEY=""
 MAGIC_LOGIN_API_KEY=""
 ```
 
+## Customization
+Feel free to customize any of the files we install or overwrite:
+
+```bash
+/database/migrations/..._create_users_table.php
+/app/Models/User.php
+/Http/Controllers/MagicAuthController.php
+/routes/web.php
+/resources/js/Pages/Auth/MagicAuth.vue
+/resources/js/Pages/magicmk_integration.js
+```
+
+## Contributing
+Contributions are welcome!
+Please feel free to submit a Pull Request or open an Issue if you find a bug or have a feature request.
+
+## Credits
+Author: Dushan Cimbaljevic
+Email: dushan@digitalnode.com

@@ -12,20 +12,23 @@
 You can **install the package** via Composer:
 
 ```bash
-composer require magicmk/digitalnode-magiclogin-inertia
+composer require digitalnode/magiclogin-inertia
 ```
 
 After the installation, **run this command** to install the needed files:
 
 ```bash
-php artisan magicauth:install
+php artisan magicmk:install
 ```
 
-Once the installation finishes, make sure to **refresh the migrations**:
+Once the installation finishes, make sure to **run the migrations**:
 
 ```bash
-php artisan migrate:refresh
+php artisan migrate
 ```
+
+After the installation, the **/magic-login route** leads to the magic login page.
+The User model **"password" and "name" field are now nullable.**
 
 Remember to add the project id (slug) and project api key from your magic mk project to your **.env**:
 
@@ -35,11 +38,10 @@ MAGIC_LOGIN_API_KEY=""
 ```
 
 ## Customization
-Feel free to customize any of the files we install or overwrite:
+Feel free to customize any of the files we install or change:
 
 ```bash
-/database/migrations/..._create_users_table.php
-/app/Models/User.php
+/database/migrations/..._make_name_and_password_nullable_in_users_table.php
 /Http/Controllers/MagicAuthController.php
 /routes/web.php
 /resources/js/Pages/Auth/MagicAuth.vue

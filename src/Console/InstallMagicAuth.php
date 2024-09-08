@@ -18,6 +18,7 @@ class InstallMagicAuth extends Command
         $this->installVuePage();
         $this->installIntegrationScript();
         $this->info('MagicmkAuthLaravelInertia installed successfully.');
+        $this->warn('Remember to add the project id (slug) and project api key from your magic mk project to your .env');
     }
 
     protected function installWebRoutes(): void

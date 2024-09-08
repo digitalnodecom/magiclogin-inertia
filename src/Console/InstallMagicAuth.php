@@ -1,6 +1,6 @@
 <?php
 
-namespace DigitalNode\MagicmkAuthLaravelInertia\Console;
+namespace DigitalNode\MagicloginInertia\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;

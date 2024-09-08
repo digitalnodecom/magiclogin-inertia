@@ -1,6 +1,6 @@
 <?php
 
-namespace DigitalNode\MagicLoginInertia;
+namespace DigitalNode\MagicloginInertia;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;

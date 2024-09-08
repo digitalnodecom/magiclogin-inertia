@@ -1,15 +1,15 @@
 {
-    "name": "magicmk/magicmk-auth-laravel-inertia",
-    "description": "Integration od magicmk in a laravel + intertiaJS project",
+    "name": "digitalnode/magiclogin-inertia",
+    "description": "Integration of Magic Login in a Laravel + InertiaJS project",
     "keywords": [
         "DigitalNode",
         "laravel",
-        "magicmk",
+        "magiclogin",
         "magic login",
-        "magicmk-auth-laravel-inertia"
-
+        "inertia",
+        "magiclogin-inertia"
     ],
-    "homepage": "https://github.com/magicmk/magicmk-auth-laravel-inertia",
+    "homepage": "https://github.com/digitalnode/magiclogin-inertia",
     "license": "MIT",
     "authors": [
         {
@@ -34,19 +34,19 @@
     },
     "autoload": {
         "psr-4": {
-            "DigitalNode\\MagicmkAuthLaravelInertia\\": "src/",
-            "DigitalNode\\MagicmkAuthLaravelInertia\\Database\\Factories\\": "database/factories/"
+            "DigitalNode\\MagicloginInertia\\": "src/",
+            "DigitalNode\\MagicloginInertia\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DigitalNode\\MagicmkAuthLaravelInertia\\Tests\\": "tests/",
+            "DigitalNode\\MagicloginInertia\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-magicmk-auth-laravel-inertia --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-magiclogin-inertia --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -72,10 +72,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "DigitalNode\\MagicmkAuthLaravelInertia\\MagicmkAuthLaravelInertiaServiceProvider"
+                "DigitalNode\\MagicloginInertia\\MagicloginInertiaServiceProvider"
             ],
             "aliases": {
-                "MagicmkAuthLaravelInertia": "DigitalNode\\MagicmkAuthLaravelInertia\\Facades\\MagicmkAuthLaravelInertia"
+                "MagicloginInertia": "DigitalNode\\MagicloginInertia\\Facades\\MagicloginInertia"
             }
         }
     },

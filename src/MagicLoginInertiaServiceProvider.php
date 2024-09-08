@@ -5,12 +5,12 @@ namespace DigitalNode\MagicmkAuthLaravelInertia;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class MagicmkAuthLaravelInertiaServiceProvider extends PackageServiceProvider
+class MagicLoginInertiaServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('magicmk-auth-laravel-inertia')
+            ->name('magiclogin-inertia')
             ->hasConfigFile()
             ->hasCommand(Console\InstallMagicAuth::class);
 

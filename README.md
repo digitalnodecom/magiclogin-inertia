@@ -12,7 +12,7 @@
 You can **install the package** via Composer:
 
 ```bash
-composer require magicmk/magicmk-auth-laravel-inertia
+composer require magicmk/digitalnode-magiclogin-inertia
 ```
 
 After the installation, **run this command** to install the needed files:

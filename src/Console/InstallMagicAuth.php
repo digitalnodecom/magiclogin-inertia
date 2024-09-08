@@ -35,7 +35,7 @@ class InstallMagicAuth extends Command
     {
         $newMigrationName = 'database/migrations/'. date('Y_m_d_His') .'_make_name_and_password_nullable_in_users_table.php';
         File::copy(__DIR__ . '/../../database/migrations/make_name_and_password_nullable_in_users_table.php', $newMigrationName);
-        $this->info('create_users_table migration overwritten.');
+        $this->info('make_name_and_password_nullable_in_users_table migration installed.');
     }
 
 

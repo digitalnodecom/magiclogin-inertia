@@ -1,6 +1,11 @@
 # MagicmkAuthLaravelInertia
 
-**MagicmkAuthLaravelInertia** is a Laravel package that integrates Magicmk authentication with Laravel + Inertia.js projects. It simplifies the setup process, provides a ready-made controller, views, and migration, and allows seamless integration with your existing Laravel application.
+<a href="https://packagist.org/packages/digitalnode/magiclogin-inertia"><img src="https://img.shields.io/packagist/v/digitalnode/magiclogin-inertia" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/digitalnode/magiclogin-inertia"><img src="https://img.shields.io/packagist/dt/digitalnode/magiclogin-inertia" alt="Total Downloads"></a>
+
+**MagicmkAuthLaravelInertia** is a Laravel package that integrates Magicmk authentication with Laravel + Inertia.js
+projects. It simplifies the setup process, provides a ready-made controller, views, and migration, and allows seamless
+integration with your existing Laravel application.
 
 ## Features
 
@@ -18,7 +23,7 @@ composer require digitalnode/magiclogin-inertia
 After the installation, **run this command** to install the needed files:
 
 ```bash
-php artisan magicmk:install
+php artisan magiclogin:install
 ```
 
 Once the installation finishes, make sure to **run the migrations**:
@@ -38,6 +43,7 @@ MAGIC_LOGIN_API_KEY=""
 ```
 
 ## Customization
+
 Feel free to customize any of the files we install or change:
 
 ```bash
@@ -49,9 +55,11 @@ Feel free to customize any of the files we install or change:
 ```
 
 ## Contributing
+
 Contributions are welcome!
 Please feel free to submit a Pull Request or open an Issue if you find a bug or have a feature request.
 
 ## Credits
+
 Author: Dushan Cimbaljevic
 Email: dushan@digitalnode.com

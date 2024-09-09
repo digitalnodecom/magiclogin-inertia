@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 
 class InstallMagicAuth extends Command
 {
-    protected $signature = 'magicmk:install';
+    protected $signature = 'magiclogin:install';
     protected $description = 'Install the MagicmkAuthLaravelInertia package';
 
     public function handle(): void

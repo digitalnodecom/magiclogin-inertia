@@ -12,11 +12,14 @@ class InstallMagicAuth extends Command
 
     public function handle(): void
     {
+        $this->warn("Will the authentication be via LINK or CODE?");
+        $linkSelected = $this->confirm('"yes"-LINK ; "no"-CODE');
         $this->installMigration();
         $this->installMagicAuthController();
         $this->installWebRoutes();
         $this->installVuePage();
-        $this->installIntegrationScript();
+        $this->installIntegrationScript($linkSelected);
+        $this->updateEnvFile();
         $this->info('MagicmkAuthLaravelInertia installed successfully.');
         $this->warn('Remember to add the project id (slug) and project api key from your magic mk project to your .env');
     }
@@ -33,7 +36,7 @@ class InstallMagicAuth extends Command
 
     protected function installMigration(): void
     {
-        $newMigrationName = 'database/migrations/'. date('Y_m_d_His') .'_make_name_and_password_nullable_in_users_table.php';
+        $newMigrationName = 'database/migrations/' . date('Y_m_d_His') . '_make_name_and_password_nullable_in_users_table.php';
         File::copy(__DIR__ . '/../../database/migrations/make_name_and_password_nullable_in_users_table.php', $newMigrationName);
         $this->info('make_name_and_password_nullable_in_users_table migration installed.');
     }
@@ -53,13 +56,31 @@ class InstallMagicAuth extends Command
         $this->info('MagicAuth Vue page installed.');
     }
 
-    protected function installIntegrationScript(): void
+    protected function installIntegrationScript($linkSelected): void
     {
-        $sourcePath = __DIR__ . '/../../resources/js/magicmk_integration.js';
+        if ($linkSelected) {
+            $sourcePath = __DIR__ . '/../../resources/js/link-integration/magicmk_integration.js';
+        } else {
+            $sourcePath = __DIR__ . '/../../resources/js/code-integration/magicmk_integration.js';
+        }
+
         $destinationPath = resource_path('js/magicmk_integration.js');
 
         File::copy($sourcePath, $destinationPath);
         $this->info('magicmk_integration.js script installed.');
     }
+
+    protected function updateEnvFile(): void
+    {
+        $envPath = base_path('.env');
+
+        if (File::exists($envPath)) {
+            File::append($envPath, "\nMAGIC_LOGIN_PROJECT_KEY=\"\"\nMAGIC_LOGIN_API_KEY=\"\"\n");
+            $this->info('.env file updated with MAGIC_LOGIN_PROJECT_KEY and MAGIC_LOGIN_API_KEY.');
+        } else {
+            $this->error('.env file not found.');
+        }
+    }
+
 }
 

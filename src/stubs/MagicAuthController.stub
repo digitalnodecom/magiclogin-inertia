@@ -51,24 +51,12 @@ class MagicAuthController extends Controller
             if ($response->successful()) {
                 $email = $response->json()["email"];
                 $this->register_or_login_user($email);
-                return redirect('/');
+                return redirect(route("dashboard"));
+
             }
         }
 
         return Inertia::render('Auth/MagicAuth', ["magic_project_key" => env('MAGIC_LOGIN_PROJECT_KEY')]);
     }
 
-    /**
-     * @param Request $request
-     * @return Application|RedirectResponse|Redirector
-     */
-    public function logout(Request $request)
-    {
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/login');
-    }
 }

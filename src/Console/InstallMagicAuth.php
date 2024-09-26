@@ -4,6 +4,7 @@ namespace DigitalNode\MagicloginInertia\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class InstallMagicAuth extends Command
 {
@@ -19,9 +20,11 @@ class InstallMagicAuth extends Command
         $this->installWebRoutes();
         $this->installVuePage();
         $this->installIntegrationScript($linkSelected);
+        $this->publishCustomUpdateUserPasswordAction();
+        $this->configureFortifyToUseCustomAction();
         $this->updateEnvFile();
         $this->info('MagicmkAuthLaravelInertia installed successfully.');
-        $this->warn('Remember to add the project id (slug) and project api key from your magic mk project to your .env');
+        $this->error('Remember to add the project id (slug) and project api key from your magic mk project to your .env');
     }
 
     protected function installWebRoutes(): void
@@ -80,6 +83,70 @@ class InstallMagicAuth extends Command
         } else {
             $this->error('.env file not found.');
         }
+    }
+
+    protected function publishCustomUpdateUserPasswordAction(): void
+    {
+        $sourcePath = __DIR__ . '/../stubs/MagicLoginUpdateUserPassword.stub';
+        $destinationPath = app_path('Actions/Fortify/MagicLoginUpdateUserPassword.php');
+
+        if (!File::exists($sourcePath)) {
+            $this->error("Stub file not found at $sourcePath");
+            return;
+        }
+
+        $destinationDir = dirname($destinationPath);
+        if (!File::exists($destinationDir)) {
+            File::makeDirectory($destinationDir, 0755, true);
+            $this->info("Created directory $destinationDir");
+        }
+
+        if (File::exists($destinationPath)) {
+            $this->warn('Custom MagicLoginUpdateUserPassword action already exists.');
+            return;
+        }
+
+        File::copy($sourcePath, $destinationPath);
+
+        $this->info('Custom MagicLoginUpdateUserPassword action published.');
+    }
+
+    protected function configureFortifyToUseCustomAction(): void
+    {
+        $providerPath = app_path('Providers/FortifyServiceProvider.php');
+
+        if (!File::exists($providerPath)) {
+            $this->error('FortifyServiceProvider.php not found.');
+            return;
+        }
+
+        $fileContents = File::get($providerPath);
+
+        $replacementBinding = 'Fortify::updateUserPasswordsUsing(\\App\\Actions\\Fortify\\MagicLoginUpdateUserPassword::class);';
+
+        $pattern = '/Fortify::updateUserPasswordsUsing\([^)]+\);/';
+
+        if (Str::contains($fileContents, $replacementBinding)) {
+            $this->info('FortifyServiceProvider.php already configured to use MagicLoginUpdateUserPassword.');
+            return;
+        }
+
+        if (preg_match($pattern, $fileContents)) {
+            $fileContents = preg_replace($pattern, $replacementBinding, $fileContents, 1, $count);
+
+            if ($count > 0) {
+                File::put($providerPath, $fileContents);
+                $this->info('Updated Fortify::updateUserPasswordsUsing binding in FortifyServiceProvider.php.');
+            } else {
+                $this->error('Failed to update Fortify::updateUserPasswordsUsing binding.');
+                return;
+            }
+        } else {
+            $this->error('Could not find existing Fortify::updateUserPasswordsUsing binding to replace.');
+            return;
+        }
+
+        $this->info('Fortify configured to use custom UpdateUserPassword action.');
     }
 
 }

@@ -14,7 +14,7 @@ class InstallMagicAuth extends Command
     public function handle(): void
     {
         $this->warn("Will the authentication be via LINK or CODE?");
-        $linkSelected = $this->confirm('"yes"-LINK ; "no"-CODE');
+        $linkSelected = $this->confirm('"yes"-LINK ; "no"-CODE', true);
         $this->installMigration();
         $this->installMagicAuthController();
         $this->installWebRoutes();
@@ -32,30 +32,99 @@ class InstallMagicAuth extends Command
         $webRoutesPath = base_path('routes/web.php');
         $routeStubPath = __DIR__ . '/../stubs/web.stub';
 
+        if (!File::exists($routeStubPath)) {
+            $this->error("Route stub file not found at $routeStubPath");
+            return;
+        }
+
+        if (!File::exists($webRoutesPath)) {
+            $this->error("Web routes file not found at $webRoutesPath");
+            return;
+        }
+
         $routeToAdd = File::get($routeStubPath);
+
+        if (Str::contains(File::get($webRoutesPath), $routeToAdd)) {
+            $this->warn('Magic login route is already present in web.php.');
+            return;
+        }
+
         File::append($webRoutesPath, "\n" . $routeToAdd);
         $this->info('Magic login route added to web.php.');
     }
 
     protected function installMigration(): void
     {
-        $newMigrationName = 'database/migrations/' . date('Y_m_d_His') . '_make_name_and_password_nullable_in_users_table.php';
-        File::copy(__DIR__ . '/../../database/migrations/make_name_and_password_nullable_in_users_table.php', $newMigrationName);
+        $sourcePath = __DIR__ . '/../../database/migrations/make_name_and_password_nullable_in_users_table.php';
+        $migrationDir = database_path('migrations');
+        $newMigrationName = $migrationDir . '/' . date('Y_m_d_His') . '_make_name_and_password_nullable_in_users_table.php';
+
+        if (!File::exists($sourcePath)) {
+            $this->error("Migration source file not found at $sourcePath");
+            return;
+        }
+
+        if (!File::exists($migrationDir)) {
+            $this->error("Migration directory not found at $migrationDir");
+            return;
+        }
+
+        if (File::exists($newMigrationName)) {
+            $this->warn("Migration file $newMigrationName already exists.");
+            return;
+        }
+
+        File::copy($sourcePath, $newMigrationName);
         $this->info('make_name_and_password_nullable_in_users_table migration installed.');
     }
 
-
     protected function installMagicAuthController(): void
     {
+        $sourcePath = __DIR__ . '/../stubs/MagicAuthController.stub';
         $controllerPath = app_path('Http/Controllers/MagicAuthController.php');
-        File::copy(__DIR__ . '/../stubs/MagicAuthController.stub', $controllerPath);
+
+        if (!File::exists($sourcePath)) {
+            $this->error("MagicAuthController stub not found at $sourcePath");
+            return;
+        }
+
+        $controllerDir = dirname($controllerPath);
+        if (!File::exists($controllerDir)) {
+            File::makeDirectory($controllerDir, 0755, true);
+            $this->info("Created directory $controllerDir");
+        }
+
+        if (File::exists($controllerPath)) {
+            $this->warn("MagicAuthController already exists at $controllerPath.");
+            return;
+        }
+
+        File::copy($sourcePath, $controllerPath);
         $this->info('MagicAuthController installed.');
     }
 
     protected function installVuePage(): void
     {
+        $sourcePath = __DIR__ . '/../../resources/js/Pages/Auth/MagicAuth.vue';
         $vuePath = resource_path('js/Pages/Auth/MagicAuth.vue');
-        File::copy(__DIR__ . '/../../resources/js/Pages/Auth/MagicAuth.vue', $vuePath);
+
+        if (!File::exists($sourcePath)) {
+            $this->error("MagicAuth Vue page not found at $sourcePath");
+            return;
+        }
+
+        $vueDir = dirname($vuePath);
+        if (!File::exists($vueDir)) {
+            File::makeDirectory($vueDir, 0755, true);
+            $this->info("Created directory $vueDir");
+        }
+
+        if (File::exists($vuePath)) {
+            $this->warn("MagicAuth Vue page already exists at $vuePath.");
+            return;
+        }
+
+        File::copy($sourcePath, $vuePath);
         $this->info('MagicAuth Vue page installed.');
     }
 
@@ -69,6 +138,22 @@ class InstallMagicAuth extends Command
 
         $destinationPath = resource_path('js/magicmk_integration.js');
 
+        if (!File::exists($sourcePath)) {
+            $this->error("Integration script not found at $sourcePath");
+            return;
+        }
+
+        $destinationDir = dirname($destinationPath);
+        if (!File::exists($destinationDir)) {
+            File::makeDirectory($destinationDir, 0755, true);
+            $this->info("Created directory $destinationDir");
+        }
+
+        if (File::exists($destinationPath)) {
+            $this->warn("Integration script already exists at $destinationPath.");
+            return;
+        }
+
         File::copy($sourcePath, $destinationPath);
         $this->info('magicmk_integration.js script installed.');
     }
@@ -78,6 +163,13 @@ class InstallMagicAuth extends Command
         $envPath = base_path('.env');
 
         if (File::exists($envPath)) {
+            $envContent = File::get($envPath);
+
+            if (Str::contains($envContent, 'MAGIC_LOGIN_PROJECT_KEY') || Str::contains($envContent, 'MAGIC_LOGIN_API_KEY')) {
+                $this->warn('.env file already contains MAGIC_LOGIN_PROJECT_KEY and/or MAGIC_LOGIN_API_KEY.');
+                return;
+            }
+
             File::append($envPath, "\nMAGIC_LOGIN_PROJECT_KEY=\"\"\nMAGIC_LOGIN_API_KEY=\"\"\n");
             $this->info('.env file updated with MAGIC_LOGIN_PROJECT_KEY and MAGIC_LOGIN_API_KEY.');
         } else {
@@ -148,6 +240,4 @@ class InstallMagicAuth extends Command
 
         $this->info('Fortify configured to use custom UpdateUserPassword action.');
     }
-
 }
-

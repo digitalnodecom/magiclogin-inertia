@@ -36,6 +36,8 @@ php artisan migrate
 
 After the installation, the **/magic-login route** leads to the magic login page.
 The User model **"password" and "name" field are now nullable.**
+A user that has logged in through magic auth can later add a password form the Change Password option in their profile
+settings.
 
 Remember to add the project id (slug) and project api key from your magic.mk project to your **.env**:
 
@@ -51,6 +53,8 @@ Feel free to customize any of the files we install or change:
 ```bash
 /database/migrations/..._make_name_and_password_nullable_in_users_table.php
 /Http/Controllers/MagicAuthController.php
+/Actions/Fortify/MagicLoginUpdateUserPassword.php
+/Providers/FortifyServiceProvider.php
 /routes/web.php
 /resources/js/Pages/Auth/MagicAuth.vue
 /resources/js/Pages/magicmk_integration.js

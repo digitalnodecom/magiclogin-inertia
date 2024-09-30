@@ -51,8 +51,11 @@ class MagicAuthController extends Controller
             if ($response->successful()) {
                 $email = $response->json()["email"];
                 $this->register_or_login_user($email);
-                return redirect(route("dashboard"));
-
+                if (Route::has('dashboard')) {
+                    return redirect()->route('dashboard');
+                } else {
+                    return redirect('/');
+                }
             }
         }
 

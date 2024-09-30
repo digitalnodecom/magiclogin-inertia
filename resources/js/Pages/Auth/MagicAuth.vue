@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import magic_script from "../../magicmk_integration.js";
+import magic_script from "../../magicmk_integration_ES6_min.js";
 import {onMounted} from "vue";
 
 const props = defineProps(
@@ -23,7 +23,7 @@ onMounted(() => {
     magic_script()
 
     window.magicmk = {
-        project: props.magic_project_key,
+        project_slug: props.magic_project_key,
         language: '',
         redirect_url: '',
         params: {

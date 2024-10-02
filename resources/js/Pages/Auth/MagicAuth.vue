@@ -1,9 +1,9 @@
 <template>
-    <div id="magic-form">
+    <form id="magic-form">
         <input id="magic-input" required>
-        <button id="magic-submit"> Sign in without password</button>
+        <button id="magic-submit"></button>
         <p id="validation-message"></p>
-    </div>
+    </form>
 </template>
 
 <script setup>
@@ -20,8 +20,6 @@ const props = defineProps(
 )
 
 onMounted(() => {
-    magic_script()
-
     window.magicmk = {
         project_slug: props.magic_project_key,
         language: '',
@@ -30,6 +28,8 @@ onMounted(() => {
             // extra: "parameters",
         }
     };
+    magic_script()
+
 
 })
 </script>

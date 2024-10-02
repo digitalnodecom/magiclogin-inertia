@@ -17,16 +17,20 @@ class MagicAuthController extends Controller
 {
 
     /**
-     * @param string $email
+     * @param string|null $email
+     * @param string|null $phone
      * @return void
      */
-    public function register_or_login_user(string $email): void
-    {
-        $user = User::query()->createOrFirst(["email" => $email]);
-
+     public function register_or_login_user(string $email = null, string $phone = null): void
+     {
+        if ($email) {
+            $user = User::query()->createOrFirst(["email" => $email]);
+        } else {
+            $user = User::query()->createOrFirst(["phone" => $phone]);
+        }
         Auth::login($user, true);
 
-    }
+     }
 
     /**
      *  Handling the redirect form magic.mk and logging in or registering the user,
@@ -50,7 +54,9 @@ class MagicAuthController extends Controller
 
             if ($response->successful()) {
                 $email = $response->json()["email"];
-                $this->register_or_login_user($email);
+                $phone = $response->json()["phone"];
+                $this->register_or_login_user($email, $phone);
+
                 if (Route::has('dashboard')) {
                     return redirect()->route('dashboard');
                 } else {

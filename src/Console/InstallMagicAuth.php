@@ -14,6 +14,7 @@ class InstallMagicAuth extends Command
     public function handle(): void
     {
         $this->installMigration();
+        $this->installPhoneMigration();
         $this->installMagicAuthController();
         $this->installWebRoutes();
         $this->installVuePage();
@@ -53,7 +54,7 @@ class InstallMagicAuth extends Command
 
     protected function installMigration(): void
     {
-        $sourcePath = __DIR__ . '/../../database/migrations/make_name_and_password_nullable_in_users_table.php';
+        $sourcePath = __DIR__ . '/../../database/migrations/make_name_password_email_nullable_in_users_table.php';
         $migrationDir = database_path('migrations');
         $newMigrationName = $migrationDir . '/' . date('Y_m_d_His') . '_make_name_and_password_nullable_in_users_table.php';
 
@@ -73,32 +74,32 @@ class InstallMagicAuth extends Command
         }
 
         File::copy($sourcePath, $newMigrationName);
-        $this->info('make_name_and_password_nullable_in_users_table migration installed.');
+        $this->info('make_name_password_email_nullable_in_users_table migration installed.');
     }
 
-    protected function installMagicAuthController(): void
+    protected function installPhoneMigration(): void
     {
-        $sourcePath = __DIR__ . '/../stubs/MagicAuthController.stub';
-        $controllerPath = app_path('Http/Controllers/MagicAuthController.php');
+        $sourcePath = __DIR__ . '/../../database/migrations/add_phone_to_users_table.php';
+        $migrationDir = database_path('migrations');
+        $newMigrationName = $migrationDir . '/' . date('Y_m_d_His') . '_add_phone_to_users_table.php';
 
         if (!File::exists($sourcePath)) {
-            $this->error("MagicAuthController stub not found at $sourcePath");
+            $this->error("Migration source file not found at $sourcePath");
             return;
         }
 
-        $controllerDir = dirname($controllerPath);
-        if (!File::exists($controllerDir)) {
-            File::makeDirectory($controllerDir, 0755, true);
-            $this->info("Created directory $controllerDir");
-        }
-
-        if (File::exists($controllerPath)) {
-            $this->warn("MagicAuthController already exists at $controllerPath.");
+        if (!File::exists($migrationDir)) {
+            $this->error("Migration directory not found at $migrationDir");
             return;
         }
 
-        File::copy($sourcePath, $controllerPath);
-        $this->info('MagicAuthController installed.');
+        if (File::exists($newMigrationName)) {
+            $this->warn("Migration file $newMigrationName already exists.");
+            return;
+        }
+
+        File::copy($sourcePath, $newMigrationName);
+        $this->info('add_phone_to_users_table migration installed.');
     }
 
     protected function installVuePage(): void

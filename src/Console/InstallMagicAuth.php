@@ -129,9 +129,9 @@ class InstallMagicAuth extends Command
 
     protected function installIntegrationScript(): void
     {
-        $sourcePath = __DIR__ . '/../../resources/js/magicmk_integration_ES6_min.js';
+        $sourcePath = __DIR__ . '/../../resources/js/magicmk_integration_ES6.js';
 
-        $destinationPath = resource_path('js/magicmk_integration_ES6_min.js');
+        $destinationPath = resource_path('js/magicmk_integration_ES6.js');
 
         if (!File::exists($sourcePath)) {
             $this->error("Integration script not found at $sourcePath");
@@ -150,7 +150,7 @@ class InstallMagicAuth extends Command
         }
 
         File::copy($sourcePath, $destinationPath);
-        $this->info('magicmk_integration_ES6_min.js script installed.');
+        $this->info('magicmk_integration_ES6.js script installed.');
     }
 
     protected function updateEnvFile(): void

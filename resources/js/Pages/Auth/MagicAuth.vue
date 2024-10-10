@@ -2,12 +2,13 @@
     <form id="magic-form">
         <input id="magic-input" required>
         <button id="magic-submit"></button>
+        <div id="RecaptchaField"></div>
         <p id="validation-message"></p>
     </form>
 </template>
 
 <script setup>
-import magic_script from "../../magicmk_integration_ES6_min.js";
+import magic_script from "../../magicmk_integration_ES6.js";
 import {onMounted} from "vue";
 
 const props = defineProps(

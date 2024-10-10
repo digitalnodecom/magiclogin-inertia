@@ -61,7 +61,7 @@ Feel free to customize any of the files we install or change:
 /Providers/FortifyServiceProvider.php
 /routes/web.php
 /resources/js/Pages/Auth/MagicAuth.vue
-/resources/js/Pages/magicmk_integration_ES6_min.js
+/resources/js/Pages/magicmk_integration_ES6.js
 ```
 
 ## Contributing

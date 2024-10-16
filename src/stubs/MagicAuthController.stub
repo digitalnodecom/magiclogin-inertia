@@ -23,13 +23,20 @@ class MagicAuthController extends Controller
      */
      public function register_or_login_user(string $email = null, string $phone = null): void
      {
+        $registerUser = env('ALLOW_MAGIC_REGISTERING_USERS');
         if ($email) {
-            $user = User::query()->createOrFirst(["email" => $email]);
+            if ($registerUser) {
+                $user = User::query()->createOrFirst(["email" => $email]);
+            } else {
+                $user = User::query()->firstOrFail(["email" => $email]);
+            }
         } else {
-            $user = User::query()->createOrFirst(["phone" => $phone]);
+            if ($registerUser) {
+                $user = User::query()->createOrFirst(["phone" => $phone]);
+            } else {
+                $user = User::query()->firstOrFail(["email" => $email]);
+            }
         }
-        Auth::login($user, true);
-
      }
 
     /**

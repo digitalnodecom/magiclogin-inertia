@@ -236,3 +236,5 @@ const dispatchLoginSuccessEvent = (data) => {
     });
     dispatchEvent(event);
 };
+
+export default magic_script;

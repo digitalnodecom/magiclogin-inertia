@@ -15,7 +15,6 @@ class InstallMagicAuth extends Command
     {
         $this->installMigration();
         $this->installPhoneMigration();
-        $this->installMagicAuthController();
         $this->installWebRoutes();
         $this->installVuePage();
         $this->installIntegrationScript();
@@ -160,13 +159,16 @@ class InstallMagicAuth extends Command
         if (File::exists($envPath)) {
             $envContent = File::get($envPath);
 
-            if (Str::contains($envContent, 'MAGIC_LOGIN_PROJECT_KEY') || Str::contains($envContent, 'MAGIC_LOGIN_API_KEY')) {
-                $this->warn('.env file already contains MAGIC_LOGIN_PROJECT_KEY and/or MAGIC_LOGIN_API_KEY.');
+            if (Str::contains($envContent, 'MAGIC_LOGIN_PROJECT_KEY') ||
+                Str::contains($envContent, 'MAGIC_LOGIN_API_KEY') ||
+                Str::contains($envContent, 'ALLOW_MAGIC_REGISTERING_USERS')
+            ) {
+                $this->warn('.env file already contains MAGIC_LOGIN_PROJECT_KEY and/or MAGIC_LOGIN_API_KEY and/or ALLOW_MAGIC_REGISTERING_USERS.');
                 return;
             }
 
-            File::append($envPath, "\nMAGIC_LOGIN_PROJECT_KEY=\"\"\nMAGIC_LOGIN_API_KEY=\"\"\n");
-            $this->info('.env file updated with MAGIC_LOGIN_PROJECT_KEY and MAGIC_LOGIN_API_KEY.');
+            File::append($envPath, "\nMAGIC_LOGIN_PROJECT_KEY=\"\"\nMAGIC_LOGIN_API_KEY=\"\"\nALLOW_MAGIC_REGISTERING_USERS=\"\"\n");
+            $this->info('.env file updated.');
         } else {
             $this->error('.env file not found.');
         }

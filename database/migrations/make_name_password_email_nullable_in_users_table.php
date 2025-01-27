@@ -10,12 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->nullable()->change();
-            $table->string('password')->nullable()->change();
-            $table->string('email')->nullable()->change();
-        });
-
+        if (Schema::hasTable('users')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('name')->nullable()->change();
+                $table->string('password')->nullable()->change();
+                $table->string('email')->nullable()->change();
+            });
+        }
     }
 
     /**
@@ -23,10 +24,12 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->nullable(false)->change();
-            $table->string('password')->nullable(false)->change();
-            $table->string('email')->nullable(false)->change();
-        });
+        if (Schema::hasTable('users')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('name')->nullable(false)->change();
+                $table->string('password')->nullable(false)->change();
+                $table->string('email')->nullable(false)->change();
+            });
+        }
     }
 };
